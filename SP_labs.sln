@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab1Pure", "Lab1Pure\Lab1Pure.vcxproj", "{BE515C72-A2AC-4AA1-AE51-394F6AD9D683}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinApiWrap", "WinApiWrap\WinApiWrap.vcxproj", "{B7E26802-9784-4F2A-B9FC-D8470F8FBE09}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TemplateApp", "TemplateApp\TemplateApp.vcxproj", "{142F1906-0ED5-4B0F-A814-5E72009E2A92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -15,6 +19,14 @@ Global
 		{BE515C72-A2AC-4AA1-AE51-394F6AD9D683}.Debug|Win32.Build.0 = Debug|Win32
 		{BE515C72-A2AC-4AA1-AE51-394F6AD9D683}.Release|Win32.ActiveCfg = Release|Win32
 		{BE515C72-A2AC-4AA1-AE51-394F6AD9D683}.Release|Win32.Build.0 = Release|Win32
+		{B7E26802-9784-4F2A-B9FC-D8470F8FBE09}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B7E26802-9784-4F2A-B9FC-D8470F8FBE09}.Debug|Win32.Build.0 = Debug|Win32
+		{B7E26802-9784-4F2A-B9FC-D8470F8FBE09}.Release|Win32.ActiveCfg = Release|Win32
+		{B7E26802-9784-4F2A-B9FC-D8470F8FBE09}.Release|Win32.Build.0 = Release|Win32
+		{142F1906-0ED5-4B0F-A814-5E72009E2A92}.Debug|Win32.ActiveCfg = Debug|Win32
+		{142F1906-0ED5-4B0F-A814-5E72009E2A92}.Debug|Win32.Build.0 = Debug|Win32
+		{142F1906-0ED5-4B0F-A814-5E72009E2A92}.Release|Win32.ActiveCfg = Release|Win32
+		{142F1906-0ED5-4B0F-A814-5E72009E2A92}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
