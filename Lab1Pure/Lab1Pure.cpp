@@ -4,7 +4,9 @@ HINSTANCE hInst;
 WCHAR AppTitle[MAX_STR], AppClass[MAX_STR];
 int ScreenWidth, ScreenHeight, WindowWidth, WindowHeight;
 bool run = true;
-int speed = 1;
+int speed = 5, CurOffset = 0;
+RECT TextRect;
+SIZE TextSize;
 
 void SetupMenu(HWND hwnd)
 {
@@ -19,6 +21,8 @@ void SetupMenu(HWND hwnd)
 	hSubMenu = CreatePopupMenu();
 	AppendMenu(hSubMenu, MF_STRING, IDM_GO, L"&Go");
 	AppendMenu(hSubMenu, MF_STRING, IDM_STOP, L"&Stop");
+	AppendMenu(hSubMenu, MF_STRING, IDM_SLOWER, L"S&lower");
+	AppendMenu(hSubMenu, MF_STRING, IDM_FASTER, L"&Faster");
 	AppendMenu(hMenu, MF_STRING | MF_POPUP, UINT(hSubMenu), L"&Actions");
 
 	SetMenu(hwnd, hMenu);
@@ -30,12 +34,36 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 	//int wmEvent = HIWORD(wParam);
 	HDC hdc;
 	PAINTSTRUCT ps;
-	SIZE sz;
+	RECT TmpRect;
 
 	switch (message)
 	{
 	case WM_CREATE:
 		SetupMenu(hwnd);
+		SetTimer(hwnd, IDT_STR_MOVE, TIMER_ELAPSE, NULL);
+		hdc = BeginPaint(hwnd, &ps);
+		GetTextExtentPoint(hdc, AppTitle, lstrlen(AppTitle), &TextSize);
+		EndPaint(hwnd, &ps);
+		CurOffset = -TextSize.cx;
+		break;
+	case WM_TIMER:
+		if (wParam == IDT_STR_MOVE)
+		{
+			CurOffset += run*speed;
+			if (CurOffset >= WindowWidth)
+				CurOffset = -TextSize.cx;
+			else if (CurOffset <= -TextSize.cx)
+					CurOffset = WindowWidth;
+			TextRect.bottom = (WindowHeight + TextSize.cy) / 2;
+			TextRect.top = (WindowHeight - TextSize.cy) / 2;
+			TextRect.left = CurOffset;
+			TextRect.right = CurOffset + TextSize.cx;
+			TmpRect.left = 0;
+			TmpRect.top = 0;
+			TmpRect.bottom = WindowHeight;
+			TmpRect.right = WindowWidth;
+			InvalidateRect(hwnd, &TmpRect, TRUE);
+		}
 		break;
 	case WM_COMMAND:
 		switch (wmId)
@@ -49,6 +77,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 		case IDM_STOP:
 			run = false;
 			break;
+		case IDM_SLOWER:
+			speed--;
+			break;
+		case IDM_FASTER:
+			speed++;
+			break;
 		}
 		break;
 	case WM_DESTROY:
@@ -60,8 +94,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 		break;
 	case WM_PAINT:
 		hdc = BeginPaint(hwnd, &ps);
-		GetTextExtentPoint(hdc, AppTitle, lstrlen(AppTitle), &sz);
-		DrawText(hdc, AppTitle, -1, &ps.rcPaint, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+		DrawText(hdc, AppTitle, lstrlen(AppTitle), &TextRect, 0);
 		EndPaint(hwnd, &ps);
 		break;
 	default:
