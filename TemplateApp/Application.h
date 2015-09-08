@@ -9,13 +9,14 @@ namespace TemplateApp
 	public:
 		HINSTANCE AppInstance;
 		WCHAR MainWindowClass[MAX_STR], AppTitle[MAX_STR];
-		int CmdShow;
+		int CmdShow, ScreenWidth, ScreenHeight;
 		MainWindow *GlobalWindow;
 
 		Application(HINSTANCE hInst, int nCmdShow);
 		~Application();
 
-		void CreateWindows();
+		void ReadSystemMetrics();
+		int CreateWindows();
 		int Run();
 	};
 }

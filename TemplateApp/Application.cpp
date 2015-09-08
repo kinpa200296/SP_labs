@@ -11,6 +11,7 @@ namespace TemplateApp
 		GlobalWindow = NULL;
 		LoadString(AppInstance, IDS_TITLE, AppTitle, MAX_STR);
 		LoadString(AppInstance, IDC_MAINWINDOWCLASS, MainWindowClass, MAX_STR);
+		ReadSystemMetrics();
 	}
 	
 	Application::~Application()
@@ -18,10 +19,10 @@ namespace TemplateApp
 		GlobalWindow->~MainWindow();
 	}
 
-	void Application::CreateWindows()
+	int Application::CreateWindows()
 	{
 		GlobalWindow = new MainWindow(AppInstance, CmdShow, AppTitle, MainWindowClass, 0, 0, WIDTH, HEIGHT);
-		GlobalWindow->Start();
+		return GlobalWindow->Start();
 	}
 
 	int Application::Run()
@@ -31,7 +32,10 @@ namespace TemplateApp
 
 		hAccelTable = LoadAccelerators(AppInstance, MAKEINTRESOURCE(IDR_HOTKEYS));
 
-		CreateWindows();
+		int res = CreateWindows();
+		if (res != 0)
+			return res;
+		
 		GlobalWindow->Show(CmdShow);
 
 		while (GetMessage(&msg, NULL, 0, 0))
@@ -47,4 +51,11 @@ namespace TemplateApp
 
 		return msg.wParam;
 	}
+
+	void Application::ReadSystemMetrics()
+	{
+		ScreenWidth = GetSystemMetrics(SM_CXSCREEN);
+		ScreenHeight = GetSystemMetrics(SM_CYSCREEN);
+	}
+
 }

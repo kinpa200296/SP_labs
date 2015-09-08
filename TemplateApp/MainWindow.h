@@ -11,8 +11,8 @@ namespace TemplateApp
 					int x, int y, int width, int height);
 		~MainWindow();
 
-		void Start();
-		void Show(int nCmdShow);
+		int Start();
+		BOOL Show(int nCmdShow);
 
 		LRESULT OnClose(WPARAM, LPARAM);
 		LRESULT OnCommand(WPARAM, LPARAM);

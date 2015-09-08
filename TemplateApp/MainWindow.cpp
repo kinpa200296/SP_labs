@@ -14,20 +14,28 @@ namespace TemplateApp
 	{
 	}
 
-	void MainWindow::Start()
+	int MainWindow::Start()
 	{
 		RegisterWindowClass(CS_HREDRAW | CS_VREDRAW, HBRUSH(COLOR_WINDOW));
 
-		Create();
+		if (!Create())
+			return 1;
 
-		AddMessage(ThisWindow, WM_CLOSE, this, ToFuncPointer(&MainWindow::OnClose));
-		AddMessage(ThisWindow, WM_COMMAND, this, ToFuncPointer(&MainWindow::OnCommand));
-		AddMessage(ThisWindow, WM_SIZE, this, ToFuncPointer(&MainWindow::OnResize));
+		bool result = true;
+
+		result = result && AddMessage(ThisWindow, WM_CLOSE, this, ToFuncPointer(&MainWindow::OnClose));
+		result = result && AddMessage(ThisWindow, WM_COMMAND, this, ToFuncPointer(&MainWindow::OnCommand));
+		result = result && AddMessage(ThisWindow, WM_SIZE, this, ToFuncPointer(&MainWindow::OnResize));
+
+		if (!result)
+			return 2;
+
+		return 0;
 	}
 
-	void MainWindow::Show(int nCmdShow)
+	BOOL MainWindow::Show(int nCmdShow)
 	{
-		ShowWindow(ThisWindow, nCmdShow);
+		return ShowWindow(ThisWindow, nCmdShow);
 	}
 	
 	LRESULT MainWindow::OnClose(WPARAM wParam, LPARAM lParam)
