@@ -23,9 +23,12 @@ namespace TemplateApp
 
 		bool result = true;
 
+		result = result && AddMessage(ThisWindow, WM_DESTROY, this, ToFuncPointer(&MainWindow::OnDestroy));
 		result = result && AddMessage(ThisWindow, WM_CLOSE, this, ToFuncPointer(&MainWindow::OnClose));
+		result = result && AddMessage(ThisWindow, WM_CREATE, this, ToFuncPointer(&MainWindow::OnCreate));
 		result = result && AddMessage(ThisWindow, WM_COMMAND, this, ToFuncPointer(&MainWindow::OnCommand));
 		result = result && AddMessage(ThisWindow, WM_SIZE, this, ToFuncPointer(&MainWindow::OnResize));
+		result = result && AddMessage(ThisWindow, WM_PAINT, this, ToFuncPointer(&MainWindow::OnPaint));
 
 		if (!result)
 			return 2;
@@ -37,10 +40,21 @@ namespace TemplateApp
 	{
 		return ShowWindow(ThisWindow, nCmdShow);
 	}
+
+	LRESULT MainWindow::OnDestroy(WPARAM wParam, LPARAM lParam)
+	{
+		PostQuitMessage(0);
+		return 0;
+	}
 	
 	LRESULT MainWindow::OnClose(WPARAM wParam, LPARAM lParam)
 	{
 		PostQuitMessage(0);
+		return 0;
+	}
+
+	LRESULT MainWindow::OnCreate(WPARAM wParam, LPARAM lParam)
+	{
 		return 0;
 	}
 
@@ -61,6 +75,15 @@ namespace TemplateApp
 	{
 		Width = LOWORD(lParam);
 		Height = HIWORD(lParam);
+		return 0;
+	}
+
+	LRESULT MainWindow::OnPaint(WPARAM wParam, LPARAM lParam)
+	{
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(ThisWindow, &ps);
+		DrawText(hdc, Title, lstrlen(Title), &ps.rcPaint, 0);
+		EndPaint(ThisWindow, &ps);
 		return 0;
 	}
 }

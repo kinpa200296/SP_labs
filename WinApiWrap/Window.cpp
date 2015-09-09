@@ -5,6 +5,8 @@
 namespace WinApiWrap
 {
 	map<HWND, Window::MessageMap> Window::GlobalMessageMap;
+	bool Window::ProcessMessages;
+	vector<MSG> Window::QueuedMessages;
 
 	Window::Window(HINSTANCE hInst, HWND parent, int x, int y, int width, int height, LPCWSTR title,
 		LPCWSTR className, DWORD exStyle, DWORD style, HMENU menu)
@@ -98,6 +100,17 @@ namespace WinApiWrap
 		Pointer ptr;
 		MessageMap msgMap;
 
+		if (!ProcessMessages)
+		{
+			MSG msg;
+			msg.hwnd = hwnd;
+			msg.message = message;
+			msg.wParam = wParam;
+			msg.lParam = lParam;
+			QueuedMessages.push_back(msg);
+			return DefWindowProc(hwnd, message, wParam, lParam);
+		}
+
 		map<HWND, MessageMap>::iterator iterGlobal = GlobalMessageMap.find(hwnd);
 
 		if (iterGlobal == GlobalMessageMap.end())
@@ -112,5 +125,13 @@ namespace WinApiWrap
 
 		ptr = iter->second;
 		return (ptr.Window->*ptr.Function)(wParam, lParam);
+	}
+
+	void Window::ResentQueuedMessages()
+	{
+		for (vector<MSG>::iterator msg = QueuedMessages.begin(); msg < QueuedMessages.end(); ++msg)
+		{
+			SendMessage(msg->hwnd, msg->message, msg->wParam, msg->lParam);
+		}
 	}
 }

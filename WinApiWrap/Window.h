@@ -32,6 +32,8 @@ namespace WinApiWrap
 		ATOM AtomIndex;
 
 		static map<HWND, MessageMap> GlobalMessageMap;
+		static bool ProcessMessages;
+		static vector<MSG> QueuedMessages;
 
 		Window(HINSTANCE hInst, HWND parent, int x, int y, int width, int height, LPCWSTR title, 
 				LPCWSTR className, DWORD exStyle, DWORD style, HMENU menu = NULL);
@@ -45,5 +47,7 @@ namespace WinApiWrap
 		static bool AddMessage(HWND hwnd, UINT message, Window *window, FuncPointer function);
 
 		static LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+		static void ResentQueuedMessages();
 	};
 }

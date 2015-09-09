@@ -21,7 +21,10 @@ namespace TemplateApp
 
 	int Application::CreateWindows()
 	{
-		GlobalWindow = new MainWindow(AppInstance, CmdShow, AppTitle, MainWindowClass, 0, 0, WIDTH, HEIGHT);
+		int x = (ScreenWidth - WIDTH) / 2;
+		int y = (ScreenHeight - HEIGHT) / 2;
+
+		GlobalWindow = new MainWindow(AppInstance, CmdShow, AppTitle, MainWindowClass, x, y, WIDTH, HEIGHT);
 		return GlobalWindow->Start();
 	}
 
@@ -32,9 +35,16 @@ namespace TemplateApp
 
 		hAccelTable = LoadAccelerators(AppInstance, MAKEINTRESOURCE(IDR_HOTKEYS));
 
+		Window::GlobalMessageMap.clear();
+		Window::ProcessMessages = false;
+		Window::QueuedMessages.clear();
+
 		int res = CreateWindows();
 		if (res != 0)
 			return res;
+
+		Window::ProcessMessages = true;
+		Window::ResentQueuedMessages();
 		
 		GlobalWindow->Show(CmdShow);
 

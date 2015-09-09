@@ -14,7 +14,10 @@ namespace TemplateApp
 		int Start();
 		BOOL Show(int nCmdShow);
 
+		LRESULT OnDestroy(WPARAM, LPARAM);
 		LRESULT OnClose(WPARAM, LPARAM);
+		LRESULT OnCreate(WPARAM, LPARAM);
+		LRESULT OnPaint(WPARAM, LPARAM);
 		LRESULT OnCommand(WPARAM, LPARAM);
 		LRESULT OnResize(WPARAM, LPARAM);
 	};
