@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinApiWrap", "WinApiWrap\Wi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TemplateApp", "TemplateApp\TemplateApp.vcxproj", "{142F1906-0ED5-4B0F-A814-5E72009E2A92}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab1", "Lab1\Lab1.vcxproj", "{1EB1FFB4-5929-4EC7-9A8B-2DCEB5F44135}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -27,6 +29,10 @@ Global
 		{142F1906-0ED5-4B0F-A814-5E72009E2A92}.Debug|Win32.Build.0 = Debug|Win32
 		{142F1906-0ED5-4B0F-A814-5E72009E2A92}.Release|Win32.ActiveCfg = Release|Win32
 		{142F1906-0ED5-4B0F-A814-5E72009E2A92}.Release|Win32.Build.0 = Release|Win32
+		{1EB1FFB4-5929-4EC7-9A8B-2DCEB5F44135}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1EB1FFB4-5929-4EC7-9A8B-2DCEB5F44135}.Debug|Win32.Build.0 = Debug|Win32
+		{1EB1FFB4-5929-4EC7-9A8B-2DCEB5F44135}.Release|Win32.ActiveCfg = Release|Win32
+		{1EB1FFB4-5929-4EC7-9A8B-2DCEB5F44135}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
