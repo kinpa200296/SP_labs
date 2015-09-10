@@ -28,6 +28,7 @@ namespace TemplateApp
 		result = result && AddMessage(ThisWindow, WM_CREATE, this, ToFuncPointer(&MainWindow::OnCreate));
 		result = result && AddMessage(ThisWindow, WM_COMMAND, this, ToFuncPointer(&MainWindow::OnCommand));
 		result = result && AddMessage(ThisWindow, WM_SIZE, this, ToFuncPointer(&MainWindow::OnResize));
+		result = result && AddMessage(ThisWindow, WM_MOVE, this, ToFuncPointer(&MainWindow::OnMove));
 		result = result && AddMessage(ThisWindow, WM_PAINT, this, ToFuncPointer(&MainWindow::OnPaint));
 
 		if (!result)
@@ -75,6 +76,13 @@ namespace TemplateApp
 	{
 		Width = LOWORD(lParam);
 		Height = HIWORD(lParam);
+		return 0;
+	}
+
+	LRESULT MainWindow::OnMove(WPARAM wParam, LPARAM lParam)
+	{
+		PosX = LOWORD(lParam);
+		PosY = HIWORD(lParam);
 		return 0;
 	}
 

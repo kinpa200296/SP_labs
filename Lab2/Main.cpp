@@ -2,11 +2,11 @@
 
 #include "Application.h"
 
-using namespace TemplateApp;
+using namespace Lab2;
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 	Application app(hInstance, nCmdShow);
 
-	return app.Run();;
+	return app.Run();
 }

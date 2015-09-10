@@ -1,6 +1,8 @@
 #pragma once
 
 #include <windows.h>
+#include <windowsx.h>
+#include <CommCtrl.h>
 
 #include <stdlib.h>
 #include <malloc.h>
