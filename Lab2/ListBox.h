@@ -10,7 +10,7 @@ namespace Lab2
 		ListBox(HINSTANCE hInst, HWND parent, int x, int y, int width, int height, int id, 
 					DWORD additional_Styles = 0);
 		~ListBox();
-		bool Start();
+		int Start();
 		int AddString(LPCWSTR str);
 		int DeleteString(int index);
 		int GetString(int index, LPWSTR buffer);

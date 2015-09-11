@@ -8,6 +8,7 @@ namespace Lab1
 		int x, int y, int width, int height) : Window(hInst, NULL, x, y, width, height, appTitle,
 		mainWindowClassName, 0, WS_OVERLAPPEDWINDOW)
 	{
+		IsMainWindow = true;
 		CurTextOffset = 0;
 		Speed = 5;
 		Run = true;
@@ -17,29 +18,27 @@ namespace Lab1
 	MainWindow::~MainWindow()
 	{
 	}
+	
+	bool MainWindow::AddWindowMessages()
+	{
+		bool res = Window::AddWindowMessages();
+
+		res = res && AddMessage(ThisWindow, WM_TIMER, this, ToFuncPointer(&MainWindow::OnTimer));
+
+		return res;
+	}
 
 	int MainWindow::Start()
 	{
 		RegisterWindowClass(CS_HREDRAW | CS_VREDRAW, HBRUSH(COLOR_WINDOW), MAKEINTRESOURCE(IDC_CURSOR), 
 			MAKEINTRESOURCE(IDI_ICON), MAKEINTRESOURCE(IDI_ICON_SMALL));
 
-		if (!Create())
-			return 1;
+		int res = Create();
 
-		bool result = true;
-
-		result = result && AddMessage(ThisWindow, WM_DESTROY, this, ToFuncPointer(&MainWindow::OnDestroy));
-		result = result && AddMessage(ThisWindow, WM_CLOSE, this, ToFuncPointer(&MainWindow::OnClose));
-		result = result && AddMessage(ThisWindow, WM_COMMAND, this, ToFuncPointer(&MainWindow::OnCommand));
-		result = result && AddMessage(ThisWindow, WM_SIZE, this, ToFuncPointer(&MainWindow::OnResize));
-		result = result && AddMessage(ThisWindow, WM_CREATE, this, ToFuncPointer(&MainWindow::OnCreate));
-		result = result && AddMessage(ThisWindow, WM_PAINT, this, ToFuncPointer(&MainWindow::OnPaint));
-		result = result && AddMessage(ThisWindow, WM_TIMER, this, ToFuncPointer(&MainWindow::OnTimer));
-
-		if (!result)
-			return 2;
-
-		//OnCreate(0, 0);
+		if (res)
+		{
+			return res;
+		}
 
 		return 0;
 	}
@@ -47,18 +46,6 @@ namespace Lab1
 	BOOL MainWindow::Show(int nCmdShow)
 	{
 		return ShowWindow(ThisWindow, nCmdShow);
-	}
-
-	LRESULT MainWindow::OnDestroy(WPARAM wParam, LPARAM lParam)
-	{
-		PostQuitMessage(0);
-		return 0;
-	}
-	
-	LRESULT MainWindow::OnClose(WPARAM wParam, LPARAM lParam)
-	{
-		PostQuitMessage(0);
-		return 0;
 	}
 
 	LRESULT MainWindow::OnCommand(WPARAM wParam, LPARAM lParam)
@@ -82,14 +69,9 @@ namespace Lab1
 		case IDM_SLOWER:
 			Speed--;
 			break;
+		default:
+			return Window::OnCommand(wParam, lParam);
 		}
-		return 0;
-	}
-
-	LRESULT MainWindow::OnResize(WPARAM wParam, LPARAM lParam)
-	{
-		Width = LOWORD(lParam);
-		Height = HIWORD(lParam);
 		return 0;
 	}
 

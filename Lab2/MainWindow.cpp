@@ -5,9 +5,10 @@
 namespace Lab2
 {
 	MainWindow::MainWindow(HINSTANCE hInst, int nCmdShow, LPCWSTR appTitle, LPCWSTR mainWindowClassName,
-		int x, int y, int width, int height) : Window(hInst, NULL, x, y, width, height, appTitle,
+		int x, int y, int width, int height) : Window(hInst, nullptr, x, y, width, height, appTitle,
 		mainWindowClassName, 0, WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN)
 	{
+		IsMainWindow = true;
 		LeftListBox = nullptr;
 		RightListBox = nullptr;
 		NewItemEdit = nullptr;
@@ -33,21 +34,12 @@ namespace Lab2
 		RegisterWindowClass(CS_HREDRAW | CS_VREDRAW, HBRUSH(COLOR_WINDOW), IDC_ARROW,
 			MAKEINTRESOURCE(IDI_ICON), MAKEINTRESOURCE(IDI_ICON_SMALL), MAKEINTRESOURCE(IDR_MENU));
 
-		if (!Create())
-			return 1;
+		int res = Create();
 
-		bool result = true;
-
-		result = result && AddMessage(ThisWindow, WM_DESTROY, this, ToFuncPointer(&MainWindow::OnDestroy));
-		result = result && AddMessage(ThisWindow, WM_CLOSE, this, ToFuncPointer(&MainWindow::OnClose));
-		result = result && AddMessage(ThisWindow, WM_CREATE, this, ToFuncPointer(&MainWindow::OnCreate));
-		result = result && AddMessage(ThisWindow, WM_COMMAND, this, ToFuncPointer(&MainWindow::OnCommand));
-		result = result && AddMessage(ThisWindow, WM_SIZE, this, ToFuncPointer(&MainWindow::OnResize));
-		result = result && AddMessage(ThisWindow, WM_MOVE, this, ToFuncPointer(&MainWindow::OnMove));
-		//result = result && AddMessage(ThisWindow, WM_PAINT, this, ToFuncPointer(&MainWindow::OnPaint));
-
-		if (!result)
-			return 2;
+		if (res)
+		{
+			return res;
+		}
 
 		LeftListBox = new ListBox(Instance, ThisWindow, 0, 0, 100, 100, IDC_LEFT_LISTBOX, 
 			LBS_EXTENDEDSEL | LBS_MULTIPLESEL);
@@ -59,15 +51,15 @@ namespace Lab2
 		ClearButton = new Button(Instance, ThisWindow, 0, 0, 0, 0, IDC_CLEAR_BUTTON, L"Clear");
 		DeleteButton = new Button(Instance, ThisWindow, 0, 0, 0, 0, IDC_DELETE_BUTTON, L"Delete");
 
-		result = true;
+		bool result = true;
 
-		result = result && LeftListBox->Start();
-		result = result && RightListBox->Start();
-		result = result && NewItemEdit->Start();
-		result = result && ToRightButton->Start();
-		result = result && ClearButton->Start();
-		result = result && AddButton->Start();
-		result = result && DeleteButton->Start();
+		result = result && !LeftListBox->Start();
+		result = result && !RightListBox->Start();
+		result = result && !NewItemEdit->Start();
+		result = result && !ToRightButton->Start();
+		result = result && !ClearButton->Start();
+		result = result && !AddButton->Start();
+		result = result && !DeleteButton->Start();
 
 		if (!result)
 			return 3;
@@ -78,23 +70,6 @@ namespace Lab2
 	BOOL MainWindow::Show(int nCmdShow)
 	{
 		return ShowWindow(ThisWindow, nCmdShow);
-	}
-
-	LRESULT MainWindow::OnDestroy(WPARAM wParam, LPARAM lParam)
-	{
-		PostQuitMessage(0);
-		return 0;
-	}
-	
-	LRESULT MainWindow::OnClose(WPARAM wParam, LPARAM lParam)
-	{
-		PostQuitMessage(0);
-		return 0;
-	}
-
-	LRESULT MainWindow::OnCreate(WPARAM wParam, LPARAM lParam)
-	{
-		return 0;
 	}
 
 	LRESULT MainWindow::OnCommand(WPARAM wParam, LPARAM lParam)
@@ -128,14 +103,15 @@ namespace Lab2
 		case IDM_CLEAR_SEL_RIGHT:
 			RightListBox->ClearSelection();
 			break;
+		default:
+			return Window::OnCommand(wParam, lParam);
 		}
 		return 0;
 	}
 
 	LRESULT MainWindow::OnResize(WPARAM wParam, LPARAM lParam)
 	{
-		Width = LOWORD(lParam);
-		Height = HIWORD(lParam);
+		Window::OnResize(wParam, lParam);
 		int width = Width - 30, height = Height - 80;
 		MoveWindow(LeftListBox->ThisWindow, 10, 10, width / 2, height, TRUE);
 		MoveWindow(RightListBox->ThisWindow, width /2 + 20, 10, width / 2, height, TRUE);
@@ -144,21 +120,6 @@ namespace Lab2
 		MoveWindow(ToRightButton->ThisWindow, 10, height + 50, width / 3, 20, TRUE);
 		MoveWindow(DeleteButton->ThisWindow, 15 + width / 3, height + 50, width / 3, 20, TRUE);
 		MoveWindow(ClearButton->ThisWindow, 20 + width / 3 * 2, height + 50, width / 3, 20, TRUE);
-		return 0;
-	}
-
-	LRESULT MainWindow::OnMove(WPARAM wParam, LPARAM lParam)
-	{
-		PosX = LOWORD(lParam);
-		PosY = HIWORD(lParam);
-		return 0;
-	}
-
-	LRESULT MainWindow::OnPaint(WPARAM wParam, LPARAM lParam)
-	{
-		/*PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(ThisWindow, &ps);
-		EndPaint(ThisWindow, &ps);*/
 		return 0;
 	}
 	

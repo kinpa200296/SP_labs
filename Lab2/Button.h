@@ -10,7 +10,7 @@ namespace Lab2
 		Button(HINSTANCE hInst, HWND parent, int x, int y, int width, int height, int id,
 			LPCWSTR text, DWORD additionalStyles = 0);
 		~Button();
-		bool Start();
+		int Start();
 		BOOL SetText(LPCWSTR text);
 	};
 }

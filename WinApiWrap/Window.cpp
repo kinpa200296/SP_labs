@@ -13,7 +13,7 @@ namespace WinApiWrap
 	{
 		Instance = hInst;
 		Parent = parent;
-		ThisWindow = NULL;
+		ThisWindow = nullptr;
 		AtomIndex = 0;
 		PosX = x;
 		PosY = y;
@@ -24,6 +24,7 @@ namespace WinApiWrap
 		ExStyle = exStyle;
 		Style = style;
 		Menu = menu;
+		IsMainWindow = false;
 	}
 
 	Window::~Window()
@@ -54,17 +55,37 @@ namespace WinApiWrap
 		return AtomIndex;
 	}
 
-	bool Window::Create()
+	int Window::Create()
 	{
 		ThisWindow = CreateWindowEx(ExStyle, ClassName, Title, Style, PosX, PosY, Width, Height,
-			Parent, Menu, Instance, NULL);
+			Parent, Menu, Instance, nullptr);
 
 		if (!ThisWindow)
 		{
-			return false;
+			return 1;
 		}
 
-		return true;
+		if (!AddWindowMessages())
+		{
+			return 2;
+		}
+
+		return 0;
+	}
+
+	bool Window::AddWindowMessages()
+	{
+		bool result = true;
+
+		result = result && AddMessage(ThisWindow, WM_DESTROY, this, ToFuncPointer(&Window::OnDestroy));
+		result = result && AddMessage(ThisWindow, WM_CLOSE, this, ToFuncPointer(&Window::OnClose));
+		result = result && AddMessage(ThisWindow, WM_SIZE, this, ToFuncPointer(&Window::OnResize));
+		result = result && AddMessage(ThisWindow, WM_MOVE, this, ToFuncPointer(&Window::OnMove));
+		result = result && AddMessage(ThisWindow, WM_CREATE, this, ToFuncPointer(&Window::OnCreate));
+		result = result && AddMessage(ThisWindow, WM_COMMAND, this, ToFuncPointer(&Window::OnCommand));
+		result = result && AddMessage(ThisWindow, WM_PAINT, this, ToFuncPointer(&Window::OnPaint));
+
+		return result;
 	}
 
 	bool Window::AddMessage(HWND hwnd, UINT message, Window* window, FuncPointer function)
@@ -133,5 +154,54 @@ namespace WinApiWrap
 		{
 			SendMessage(msg->hwnd, msg->message, msg->wParam, msg->lParam);
 		}
+	}
+
+	LRESULT Window::OnDestroy(WPARAM wParam, LPARAM lParam)
+	{
+		if (IsMainWindow)
+		{
+			PostQuitMessage(0);
+			return 0;
+		}
+		return DefWindowProc(ThisWindow, WM_CREATE, wParam, lParam);
+	}
+
+	LRESULT Window::OnClose(WPARAM wParam, LPARAM lParam)
+	{
+		if (IsMainWindow)
+		{
+			PostQuitMessage(0);
+			return 0;
+		}
+		return DefWindowProc(ThisWindow, WM_CREATE, wParam, lParam);
+	}
+
+	LRESULT Window::OnResize(WPARAM wParam, LPARAM lParam)
+	{
+		Width = LOWORD(lParam);
+		Height = HIWORD(lParam);
+		return 0;
+	}
+
+	LRESULT Window::OnMove(WPARAM wParam, LPARAM lParam)
+	{
+		PosX = LOWORD(lParam);
+		PosY = HIWORD(lParam);
+		return 0;
+	}
+
+	LRESULT Window::OnCreate(WPARAM wParam, LPARAM lParam)
+	{
+		return DefWindowProc(ThisWindow, WM_CREATE, wParam, lParam);
+	}
+
+	LRESULT Window::OnCommand(WPARAM wParam, LPARAM lParam)
+	{
+		return DefWindowProc(ThisWindow, WM_COMMAND, wParam, lParam);
+	}
+
+	LRESULT Window::OnPaint(WPARAM wParam, LPARAM lParam)
+	{
+		return DefWindowProc(ThisWindow, WM_PAINT, wParam, lParam);
 	}
 }

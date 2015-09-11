@@ -5,9 +5,10 @@
 namespace TemplateApp
 {
 	MainWindow::MainWindow(HINSTANCE hInst, int nCmdShow, LPCWSTR appTitle, LPCWSTR mainWindowClassName,
-		int x, int y, int width, int height) : Window(hInst, NULL, x, y, width, height, appTitle,
+		int x, int y, int width, int height) : Window(hInst, nullptr, x, y, width, height, appTitle,
 		mainWindowClassName, 0, WS_OVERLAPPEDWINDOW)
 	{
+		IsMainWindow = true;
 	}
 
 	MainWindow::~MainWindow()
@@ -18,21 +19,12 @@ namespace TemplateApp
 	{
 		RegisterWindowClass(CS_HREDRAW | CS_VREDRAW, HBRUSH(COLOR_WINDOW));
 
-		if (!Create())
-			return 1;
+		int res = Create();
 
-		bool result = true;
-
-		result = result && AddMessage(ThisWindow, WM_DESTROY, this, ToFuncPointer(&MainWindow::OnDestroy));
-		result = result && AddMessage(ThisWindow, WM_CLOSE, this, ToFuncPointer(&MainWindow::OnClose));
-		result = result && AddMessage(ThisWindow, WM_CREATE, this, ToFuncPointer(&MainWindow::OnCreate));
-		result = result && AddMessage(ThisWindow, WM_COMMAND, this, ToFuncPointer(&MainWindow::OnCommand));
-		result = result && AddMessage(ThisWindow, WM_SIZE, this, ToFuncPointer(&MainWindow::OnResize));
-		result = result && AddMessage(ThisWindow, WM_MOVE, this, ToFuncPointer(&MainWindow::OnMove));
-		result = result && AddMessage(ThisWindow, WM_PAINT, this, ToFuncPointer(&MainWindow::OnPaint));
-
-		if (!result)
-			return 2;
+		if (res)
+		{
+			return res;
+		}
 
 		return 0;
 	}
@@ -40,23 +32,6 @@ namespace TemplateApp
 	BOOL MainWindow::Show(int nCmdShow)
 	{
 		return ShowWindow(ThisWindow, nCmdShow);
-	}
-
-	LRESULT MainWindow::OnDestroy(WPARAM wParam, LPARAM lParam)
-	{
-		PostQuitMessage(0);
-		return 0;
-	}
-	
-	LRESULT MainWindow::OnClose(WPARAM wParam, LPARAM lParam)
-	{
-		PostQuitMessage(0);
-		return 0;
-	}
-
-	LRESULT MainWindow::OnCreate(WPARAM wParam, LPARAM lParam)
-	{
-		return 0;
 	}
 
 	LRESULT MainWindow::OnCommand(WPARAM wParam, LPARAM lParam)
@@ -68,21 +43,9 @@ namespace TemplateApp
 		case IDM_QUIT:
 			OnClose(wParam, lParam);
 			break;
+		default:
+			return Window::OnCommand(wParam, lParam);
 		}
-		return 0;
-	}
-
-	LRESULT MainWindow::OnResize(WPARAM wParam, LPARAM lParam)
-	{
-		Width = LOWORD(lParam);
-		Height = HIWORD(lParam);
-		return 0;
-	}
-
-	LRESULT MainWindow::OnMove(WPARAM wParam, LPARAM lParam)
-	{
-		PosX = LOWORD(lParam);
-		PosY = HIWORD(lParam);
 		return 0;
 	}
 

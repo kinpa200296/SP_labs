@@ -15,7 +15,7 @@ namespace Lab2
 		DestroyWindow(ThisWindow);
 	}
 
-	bool Button::Start()
+	int Button::Start()
 	{
 		return Create();
 	}

@@ -26,6 +26,7 @@ namespace WinApiWrap
 		HWND ThisWindow, Parent;
 		HINSTANCE Instance;
 		int PosX, PosY, Width, Height;
+		bool IsMainWindow;
 		DWORD ExStyle, Style;
 		HMENU Menu;
 		WCHAR Title[MAX_STR], ClassName[MAX_STR];
@@ -36,13 +37,23 @@ namespace WinApiWrap
 		static vector<MSG> QueuedMessages;
 
 		Window(HINSTANCE hInst, HWND parent, int x, int y, int width, int height, LPCWSTR title, 
-				LPCWSTR className, DWORD exStyle, DWORD style, HMENU menu = NULL);
+				LPCWSTR className, DWORD exStyle, DWORD style, HMENU menu = nullptr);
 		virtual ~Window();
 
-		bool Create();
+		int Create();
 
 		virtual ATOM RegisterWindowClass(UINT classStyle, HBRUSH backgroundBrush,
-			LPCWSTR cursor = IDC_ARROW, LPCWSTR icon = NULL, LPCWSTR iconSm = NULL, LPCWSTR menu = NULL);
+			LPCWSTR cursor = IDC_ARROW, LPCWSTR icon = nullptr, LPCWSTR iconSm = nullptr, LPCWSTR menu = nullptr);
+
+		virtual bool AddWindowMessages();
+
+		virtual LRESULT OnDestroy(WPARAM wParam, LPARAM lParam);
+		virtual LRESULT OnClose(WPARAM wParam, LPARAM lParam);
+		virtual LRESULT OnResize(WPARAM wParam, LPARAM lParam);
+		virtual LRESULT OnMove(WPARAM wParam, LPARAM lParam);
+		virtual LRESULT OnCreate(WPARAM wParam, LPARAM lParam);
+		virtual LRESULT OnCommand(WPARAM wParam, LPARAM lParam);
+		virtual LRESULT OnPaint(WPARAM wParam, LPARAM lParam);
 
 		static bool AddMessage(HWND hwnd, UINT message, Window *window, FuncPointer function);
 

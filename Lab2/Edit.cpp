@@ -15,7 +15,7 @@ namespace Lab2
 		DestroyWindow(ThisWindow);
 	}
 
-	bool Edit::Start()
+	int Edit::Start()
 	{
 		return Create();
 	}

@@ -8,7 +8,7 @@ namespace TemplateApp
 	{
 		AppInstance = hInst;
 		CmdShow = nCmdShow;
-		GlobalWindow = NULL;
+		GlobalWindow = nullptr;
 		LoadString(AppInstance, IDS_TITLE, AppTitle, MAX_STR);
 		LoadString(AppInstance, IDC_MAINWINDOWCLASS, MainWindowClass, MAX_STR);
 		ReadSystemMetrics();
@@ -48,7 +48,7 @@ namespace TemplateApp
 		
 		GlobalWindow->Show(CmdShow);
 
-		while (GetMessage(&msg, NULL, 0, 0))
+		while (GetMessage(&msg, nullptr, 0, 0))
 		{
 			if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
 			{

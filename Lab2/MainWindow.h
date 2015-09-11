@@ -25,12 +25,7 @@ namespace Lab2
 		void DeleteAction();
 		void ClearAction();
 
-		LRESULT OnDestroy(WPARAM, LPARAM);
-		LRESULT OnClose(WPARAM, LPARAM);
-		LRESULT OnCreate(WPARAM, LPARAM);
-		LRESULT OnPaint(WPARAM, LPARAM);
-		LRESULT OnCommand(WPARAM, LPARAM);
-		LRESULT OnResize(WPARAM, LPARAM);
-		LRESULT OnMove(WPARAM, LPARAM);
+		LRESULT OnCommand(WPARAM wParam, LPARAM lParam) override;
+		LRESULT OnResize(WPARAM wParam, LPARAM lParam) override;
 	};
 }

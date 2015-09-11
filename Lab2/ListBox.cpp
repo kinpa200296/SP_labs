@@ -15,7 +15,7 @@ namespace Lab2
 		DestroyWindow(ThisWindow);
 	}
 
-	bool ListBox::Start()
+	int ListBox::Start()
 	{
 		return Create();
 	}

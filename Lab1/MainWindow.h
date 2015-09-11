@@ -17,17 +17,15 @@ namespace Lab1
 		UINT_PTR TimerPtr;
 		bool Run;
 
+		bool AddWindowMessages() override;
 		int Start();
 		BOOL Show(int nCmdShow);
 		void SetupMenu();
 		void CalcTextRect();
 
-		LRESULT OnDestroy(WPARAM, LPARAM);
-		LRESULT OnClose(WPARAM, LPARAM);
-		LRESULT OnCommand(WPARAM, LPARAM);
-		LRESULT OnResize(WPARAM, LPARAM);
-		LRESULT OnCreate(WPARAM, LPARAM);
-		LRESULT OnPaint(WPARAM, LPARAM);
+		LRESULT OnCommand(WPARAM, LPARAM) override;
+		LRESULT OnCreate(WPARAM, LPARAM) override;
+		LRESULT OnPaint(WPARAM, LPARAM) override;
 		LRESULT OnTimer(WPARAM, LPARAM);
 	};
 }

@@ -9,7 +9,7 @@ namespace Lab2
 	public:
 		Edit(HINSTANCE hInst, HWND parent, int x, int y, int width, int height, int id, DWORD additionalStyles = 0);
 		~Edit();
-		bool Start();
+		int Start();
 		BOOL SetText(LPCWSTR text);
 		int GetText(LPWSTR buffer, int bufferSize);
 		int GetTextLength();
