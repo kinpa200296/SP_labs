@@ -163,7 +163,7 @@ namespace WinApiWrap
 			PostQuitMessage(0);
 			return 0;
 		}
-		return DefWindowProc(ThisWindow, WM_CREATE, wParam, lParam);
+		return DefWindowProc(ThisWindow, WM_DESTROY, wParam, lParam);
 	}
 
 	LRESULT Window::OnClose(WPARAM wParam, LPARAM lParam)
@@ -173,7 +173,7 @@ namespace WinApiWrap
 			PostQuitMessage(0);
 			return 0;
 		}
-		return DefWindowProc(ThisWindow, WM_CREATE, wParam, lParam);
+		return DefWindowProc(ThisWindow, WM_CLOSE, wParam, lParam);
 	}
 
 	LRESULT Window::OnResize(WPARAM wParam, LPARAM lParam)

@@ -41,15 +41,15 @@ namespace Lab2
 			return res;
 		}
 
-		LeftListBox = new ListBox(Instance, ThisWindow, 0, 0, 100, 100, IDC_LEFT_LISTBOX, 
+		LeftListBox = new ListBox(IDSC_LISTBOX, Instance, ThisWindow, 0, 0, 100, 100, IDC_LEFT_LISTBOX, 
 			LBS_EXTENDEDSEL | LBS_MULTIPLESEL);
-		RightListBox = new ListBox(Instance, ThisWindow, 110, 0, 100, 100, IDC_RIGHT_LISTBOX,
+		RightListBox = new ListBox(IDSC_LISTBOX, Instance, ThisWindow, 110, 0, 100, 100, IDC_RIGHT_LISTBOX,
 			LBS_EXTENDEDSEL | LBS_MULTIPLESEL);
-		NewItemEdit = new Edit(Instance, ThisWindow, 0, 110, 45, 20, IDC_NEWITEM_EDIT);
-		AddButton = new Button(Instance, ThisWindow, 55, 110, 45, 20, IDC_ADD_BUTTON, L"Add");
-		ToRightButton = new Button(Instance, ThisWindow, 0, 0, 0, 0, IDC_TORIGHT_BUTTON, L"ToRight");
-		ClearButton = new Button(Instance, ThisWindow, 0, 0, 0, 0, IDC_CLEAR_BUTTON, L"Clear");
-		DeleteButton = new Button(Instance, ThisWindow, 0, 0, 0, 0, IDC_DELETE_BUTTON, L"Delete");
+		NewItemEdit = new Edit(IDSC_EDIT, Instance, ThisWindow, 0, 110, 45, 20, IDC_NEWITEM_EDIT);
+		AddButton = new Button(IDSC_BUTTON, Instance, ThisWindow, 55, 110, 45, 20, IDC_ADD_BUTTON, L"Add");
+		ToRightButton = new Button(IDSC_BUTTON, Instance, ThisWindow, 0, 0, 0, 0, IDC_TORIGHT_BUTTON, L"ToRight");
+		ClearButton = new Button(IDSC_BUTTON, Instance, ThisWindow, 0, 0, 0, 0, IDC_CLEAR_BUTTON, L"Clear");
+		DeleteButton = new Button(IDSC_BUTTON, Instance, ThisWindow, 0, 0, 0, 0, IDC_DELETE_BUTTON, L"Delete");
 
 		bool result = true;
 
@@ -129,7 +129,8 @@ namespace Lab2
 		NewItemEdit->GetText(buffer, MAX_STR);
 		if (!LeftListBox->AddStringUnique(buffer))
 		{
-			MessageBox(ThisWindow, L"Left listbox already has that string.", L"Error", MB_OK);
+			MessageBox(ThisWindow, L"Left listbox already has that string. Or you entered an empty string.",
+				L"Error", MB_OK);
 		}
 		else
 		{
@@ -142,7 +143,7 @@ namespace Lab2
 		WCHAR buffer[MAX_STR];
 		vector<int> selection = LeftListBox->GetSelectedItemsIndex();
 		bool res = true;
-		for (int i = 0; i < selection.size(); i++)
+		for (unsigned int i = 0; i < selection.size(); i++)
 		{
 			LeftListBox->GetString(selection[i], buffer);
 			res = RightListBox->AddStringUnique(buffer) && res;
@@ -158,11 +159,11 @@ namespace Lab2
 	{
 		vector<int> leftSelection = LeftListBox->GetSelectedItemsIndex();
 		vector<int> rightSelection = RightListBox->GetSelectedItemsIndex();
-		for (int i = 0, tmp = 0; i < leftSelection.size(); i++, tmp++)
+		for (unsigned int i = 0, tmp = 0; i < leftSelection.size(); i++, tmp++)
 		{
 			LeftListBox->DeleteString(leftSelection[i] - tmp);
 		}
-		for (int i = 0, tmp = 0; i < rightSelection.size(); i++, tmp++)
+		for (unsigned int i = 0, tmp = 0; i < rightSelection.size(); i++, tmp++)
 		{
 			RightListBox->DeleteString(rightSelection[i] - tmp);
 		}
