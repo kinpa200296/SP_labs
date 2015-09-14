@@ -9,6 +9,7 @@ namespace WinApiWrap
 		width, height, title, className, exStyle, style, menu)
 	{
 		SubClassId = subClassId;
+		Id = int(menu);
 	}
 
 	Control::~Control()

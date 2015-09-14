@@ -5,6 +5,7 @@
 #define IDSC_BUTTON 0
 #define IDSC_EDIT 1
 #define IDSC_LISTBOX 2
+#define IDSC_STATIC 3
 
 namespace WinApiWrap
 {
@@ -12,6 +13,7 @@ namespace WinApiWrap
 	{
 	public:
 		UINT_PTR SubClassId;
+		int Id;
 
 		Control(UINT_PTR subClassId, HINSTANCE hInst, HWND parent, int x, int y, int width, int height, LPCWSTR title,
 			LPCWSTR className, DWORD exStyle, DWORD style, HMENU menu = nullptr);
