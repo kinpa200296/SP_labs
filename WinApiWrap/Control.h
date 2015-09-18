@@ -6,6 +6,7 @@
 #define IDSC_EDIT 1
 #define IDSC_LISTBOX 2
 #define IDSC_STATIC 3
+#define IDSC_LISTVIEW 4
 
 namespace WinApiWrap
 {
